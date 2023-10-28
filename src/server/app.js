@@ -19,9 +19,9 @@ app.get("/hello", (req, res) => {
 // TODO: Build backend routes
 // Require folders inside of /server
 // separate posts, tags, users, utils folders
-app.use("/users", require("./users"));
-app.use("/posts", require("./posts"));
-app.use("/tags", require("./tags"));
+// app.use("/users", require("./users"));
+// app.use("/posts", require("./posts"));
+// app.use("/tags", require("./tags"));
 
 
 // serves the HTML file that Vite builds
