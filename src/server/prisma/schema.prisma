@@ -7,15 +7,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model post_tags {
-  postId Int?
-  tagId  Int?
+  postId Int
+  tagId  Int
   posts  posts? @relation(fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   tags   tags?  @relation(fields: [tagId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([postId, tagId])
-  @@ignore
 }
 
 model posts {
@@ -24,14 +22,14 @@ model posts {
   title     String      @db.VarChar(255)
   content   String
   active    Boolean?    @default(true)
-  post_tags post_tags[] @ignore
+  post_tags post_tags[]
   users     users?      @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model tags {
   id        Int         @id @default(autoincrement())
   name      String      @unique @db.VarChar(255)
-  post_tags post_tags[] @ignore
+  post_tags post_tags[]
 }
 
 model users {
