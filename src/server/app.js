@@ -19,10 +19,14 @@ app.get("/hello", (req, res) => {
 // TODO: Build backend routes
 // Require folders inside of /server
 // separate posts, tags, users, utils folders
-// app.use("/users", require("./users"));
-// app.use("/posts", require("./posts"));
-// app.use("/tags", require("./tags"));
+const usersRouter = require("./users/users");
+app.use("/users", usersRouter);
 
+// const postsRouter = require("./posts");
+// app.use("/posts", postsRouter);
+
+// const tagsRouter = require("./tags");
+// app.use("/tags", tagsRouter);
 
 // serves the HTML file that Vite builds
 app.get('/', (req, res) => {
