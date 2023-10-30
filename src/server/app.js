@@ -16,6 +16,21 @@ app.get("/hello", (req, res) => {
     res.send("Hello Vite + React!");
   });
 
+// Check request for a token and attach decoded id to request
+// .slice(7) strips unwanted prefix before token
+app.use((req, res, next) => {
+  const auth = req.headers.authorization;
+  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+
+  try {
+    req.user = jwt.verify(token, process.env.JWT); // validate token with jwt.verify
+  } catch {
+    req.user = null; // otherwise is null
+  }
+
+  next();
+});
+
 // TODO: Build backend routes
 // Require folders inside of /server
 // separate posts, tags, users, utils folders

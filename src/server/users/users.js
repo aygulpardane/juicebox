@@ -1,6 +1,9 @@
 const express = require("express");
 const usersRouter = express.Router();
 const db = require("../db");
+const jwt = require("jsonwebtoken");
+const {JWT} = process.env;
+
 
 // Deny access if user is not logged in
 // usersRouter.use((req, res, next) => {
@@ -31,7 +34,14 @@ usersRouter.post("/register", async (req, res, next) => {
                 location: req.body.location
             }
         });
-        res.status(201).send(user);
+
+        // create a token with user id
+        // jwt.sign takes payload, secret, and options as arguments
+        // payload is used to find our which user is the owner (has to be unique)
+        const token = jwt.sign({id: user.id}, process.env.JWT);
+
+        // send token to client in the response body
+        res.status(201).send({token});
     } catch (error) {
         next(error);
     }
