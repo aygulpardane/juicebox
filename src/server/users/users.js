@@ -15,6 +15,7 @@ const {JWT} = process.env;
 
 // Get all users
 usersRouter.get("/", async (req, res, next) => {
+    console.log(req.user); //?????
     try {
         const allUsers = await db.user.findMany();
         res.send(allUsers);
@@ -58,7 +59,14 @@ usersRouter.post("/login", async (req, res, next) => {
             password
         }
     });
-    res.send("success");
+
+    if (!user) {
+        return res.status(401).send("Invalid login credentials.")
+    };
+
+    const token = jwt.sign({id: user.id}, process.env.JWT);
+
+    res.send({token});
    } catch (error) {
     next(error);
    }
