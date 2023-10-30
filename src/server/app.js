@@ -22,8 +22,8 @@ app.get("/hello", (req, res) => {
 const usersRouter = require("./users/users");
 app.use("/users", usersRouter);
 
-// const postsRouter = require("./posts");
-// app.use("/posts", postsRouter);
+const postsRouter = require("./posts/posts");
+app.use("/posts", postsRouter);
 
 // const tagsRouter = require("./tags");
 // app.use("/tags", tagsRouter);
