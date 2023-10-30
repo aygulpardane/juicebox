@@ -11,4 +11,9 @@ postsRouter.get("/", async(req, res, next) => {
     }
 });
 
+// Get a single post
+// Create a post
+// Update a post
+// Delete a post
+
 module.exports = postsRouter;
