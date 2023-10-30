@@ -12,11 +12,11 @@ const db = require("../db");
 
 // Get all users
 usersRouter.get("/", async (req, res, next) => {
-    // console.log();
+    console.log(req.body);
     try {
         const allUsers = await db.user.findMany({
             where: {
-                userid: user.id
+                userid: req.data.user.id
             }
         });
         res.send(allUsers);

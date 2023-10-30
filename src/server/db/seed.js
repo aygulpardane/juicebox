@@ -57,8 +57,10 @@ async function seed() {
                 }
             }
         })
-        
+
     } catch (error) {
         console.error(error);
     }
 };
+
+module.exports = seed;
