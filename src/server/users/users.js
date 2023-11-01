@@ -6,12 +6,12 @@ const {JWT} = process.env;
 
 
 // Deny access if user is not logged in
-usersRouter.use((req, res, next) => {
-    if (!req.body) {
-      return res.status(401).send("You must be logged in to do that.");
-    }
-    next();
-  });
+// usersRouter.use((req, res, next) => {
+//     if (!req.body) {
+//       return res.status(401).send("You must be logged in to do that.");
+//     }
+//     next();
+//   });
 
 // Get all users
 usersRouter.get("/", async (req, res, next) => {
@@ -68,12 +68,24 @@ usersRouter.post("/login", async (req, res, next) => {
 
     const token = jwt.sign({id: user.id}, JWT);
 
-    res.send({token});
+    res.send({user, token});
    } catch (error) {
     next(error);
    }
 });
 
 // TODO: Delete a user
+usersRouter.delete("/:id", async (req, res, next) => {
+    try {
+        const user = await db.user.delete({
+            where: {
+                id: Number(req.params.id)
+            }
+        });
+        res.send(user);
+    } catch (error) {
+        next(error);
+    }
+});
 
 module.exports = usersRouter;
