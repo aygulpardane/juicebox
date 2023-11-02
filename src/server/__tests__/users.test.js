@@ -22,11 +22,11 @@ describe('GET /users', () => {
    });
 });
 
-describe('Get /users/:id', () => {
-    it('returns the logged in user', async () => {
+// describe('Get /users/:id', () => {
+//     it('returns the logged in user', async () => {
 
-    });
-});
+//     });
+// });
 
 describe('Authentication', () => {
     beforeEach(() => {
@@ -62,17 +62,17 @@ describe('Authentication', () => {
         });
     });
 
-    describe('Login /users/login', () => {
-        it('logs in a user with valid username and password', async () => {
+    // describe('Login /users/login', () => {
+    //     it('logs in a user with valid username and password', async () => {
 
-        });
-    });
+    //     });
+    // });
 
-    describe('Delete /users/:id', () => {
-        it('deletes the logged in user', async () => {
+    // describe('Delete /users/:id', () => {
+    //     it('deletes the logged in user', async () => {
 
-        });
-    });
+    //     });
+    // });
 });
 
 // mockResolvedValue (asynchronous so we wait for promise to resolve) vs mockReturnedValue (synchronous)

@@ -18,8 +18,7 @@ postsRouter.get("/:id", async(req, res, next) => {
     try {
         const post = await db.post.findUniqueOrThrow({
             where: {
-                id: Number(req.params.id),
-                authorId: req.user.id
+                id: Number(req.params.id)
             }
         });
         res.send(post);

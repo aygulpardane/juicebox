@@ -7,7 +7,7 @@ const prismaMock = require('../mocks/prismaMock');
 describe('GET /posts', () => {
    it('returns a list of all posts', async () => {
     const posts = [
-        {id: 123, suthorId: 123, title: 'fakeTitle', content: 'fakeContent'}
+        {id: 123, authorId: 123, title: 'fakeTitle', content: 'fakeContent'}
     ];
 
     prismaMock.post.findMany.mockResolvedValue(posts);
@@ -21,36 +21,36 @@ describe('GET /posts', () => {
    });
 });
 
-// describe('GET /posts/:id', () => {
-//     it('returns a single post', async () => {
-//         const post = [
-//             {id: 123, suthorId: 123, title: 'fakeTitle', content: 'fakeContent'}
-//         ];
+describe('GET /posts/:id', () => {
+    it('returns a single post', async () => {
+        const singlePost = [
+            {id: 123, authorId: 123, title: 'fakeTitle', content: 'fakeContent'}
+        ];
 
-//         prismaMock.post.findUniqueOrThrow.mockResolvedValue(post);
+        prismaMock.post.findUniqueOrThrow.mockResolvedValue(singlePost);
 
-//         const response = await request(app).get('/posts/:id');
+        const response = await request(app).get('/posts/123');
 
-//         console.log(response.body);
+        console.log(response.body);
 
-//         expect(response.body[0]).toEqual(post[0]);
+        expect(response.body[0]).toEqual(singlePost[0]);
+    });
+});
+
+// describe('Create /posts', () => {
+//     it('creates a post for an authenticated user', async () => {
+
 //     });
 // });
 
-describe('Create /posts', () => {
-    it('creates a post for an authenticated user', async () => {
+// describe('Update /posts/:id', () => {
+//     it('updates a post for an authenticated user', async () => {
 
-    });
-});
+//     });
+// });
 
-describe('Update /posts/:id', () => {
-    it('updates a post for an authenticated user', async () => {
+// describe('Delete /posts/:id', () => {
+//     it('deletes a post for an authenticated user', async () => {
 
-    });
-});
-
-describe('Delete /posts/:id', () => {
-    it('deletes a post for an authenticated user', async () => {
-
-    });
-});
+//     });
+// });
