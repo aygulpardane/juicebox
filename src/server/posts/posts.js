@@ -18,8 +18,8 @@ postsRouter.get("/:id", async(req, res, next) => {
     try {
         const post = await db.post.findUniqueOrThrow({
             where: {
-                id: Number(req.params.id)
-                // ADD authorId after creating post for logged in user
+                id: Number(req.params.id),
+                authorId: req.user.id
             }
         });
         res.send(post);
@@ -29,7 +29,7 @@ postsRouter.get("/:id", async(req, res, next) => {
 });
 
 // Create a post
-postsRouter.post("/", async (req, res, next) => {
+postsRouter.post("/", requireUser, async (req, res, next) => {
     try {
         const {title, content} = req.body;
         const post = await db.post.create({
@@ -65,12 +65,11 @@ postsRouter.patch("/:id", requireUser, async (req, res, next) => {
 });
 
 // Delete a post
-postsRouter.delete("/:id", async (req, res, next) => {
+postsRouter.delete("/:id", requireUser, async (req, res, next) => {
     try {
         const post = await db.post.delete({
             where: {
                 id: Number(req.params.id)
-                // ADD authorId
             }
         });
         res.send(post);

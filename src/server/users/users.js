@@ -16,14 +16,14 @@ usersRouter.get("/", async (req, res, next) => {
 });
 
 // Get a single user
-usersRouter.get("/:id",  async (req, res, next) => { // FIX requireUser
-    console.log(req.user);
+usersRouter.get("/:id", requireUser, async (req, res, next) => {
     try {
         const user = await db.user.findUniqueOrThrow({
             where: {
                 id: Number(req.params.id)
             }
         });
+        res.send(user);
     } catch (error) {
         next(error);
     }
@@ -40,6 +40,10 @@ usersRouter.post("/register", async (req, res, next) => {
                 location: req.body.location
             }
         });
+
+        if (!req.body.password) {
+            return res.status(401).send("Please provide a password")
+        };
 
         // create a token with user id
         // jwt.sign takes payload, secret, and options as arguments
@@ -71,14 +75,14 @@ usersRouter.post("/login", async (req, res, next) => {
 
     const token = jwt.sign({id: user.id}, process.env.JWT);
 
-    res.send({user, token});
+    res.send({token});
    } catch (error) {
     next(error);
    }
 });
 
 // TODO: Delete a user
-usersRouter.delete("/:id", async (req, res, next) => {
+usersRouter.delete("/:id", requireUser, async (req, res, next) => {
     try {
         const user = await db.user.delete({
             where: {
