@@ -18,12 +18,12 @@ model Post_tags {
 
 model Post {
   id        Int         @id @default(autoincrement())
-  authorId  Int?
+  authorId  Int
   title     String      @db.VarChar(255)
   content   String
   active    Boolean?    @default(true)
   post_tags Post_tags[]
-  users     User?      @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users     User      @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Tag {

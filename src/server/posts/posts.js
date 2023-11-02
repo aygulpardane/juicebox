@@ -1,6 +1,7 @@
 const express = require("express");
 const postsRouter = express.Router();
 const db = require("../db");
+const {requireUser} = require("../db/utils");
 
 // GET all posts
 postsRouter.get("/", async(req, res, next) => {
@@ -28,15 +29,14 @@ postsRouter.get("/:id", async(req, res, next) => {
 });
 
 // Create a post
-postsRouter.post("/", async (req, res, next) => {
-    console.log(req.user);
+postsRouter.post("/", requireToken, async (req, res, next) => {
     try {
         const {title, content} = req.body;
         const post = await db.post.create({
             data: {
                 title,
                 content,
-                authorId: req.user.id
+                // authorId: isValid(req.user.id) ? req.user.id : null
             }
         })
         res.status(201).send(post);

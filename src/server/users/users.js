@@ -3,15 +3,7 @@ const usersRouter = express.Router();
 const db = require("../db");
 const jwt = require("jsonwebtoken");
 const {JWT} = process.env;
-
-
-// Deny access if user is not logged in
-// usersRouter.use((req, res, next) => {
-//     if (!req.body) {
-//       return res.status(401).send("You must be logged in to do that.");
-//     }
-//     next();
-//   });
+const {requireUser} = require("../db/utils");
 
 // Get all users
 usersRouter.get("/", async (req, res, next) => {
@@ -24,6 +16,18 @@ usersRouter.get("/", async (req, res, next) => {
 });
 
 // TODO: Get a single user
+usersRouter.get("/:id",  async (req, res, next) => { // FIX requireUser
+    console.log(req.user);
+    try {
+        const user = await db.user.findUniqueOrThrow({
+            where: {
+                id: Number(req.params.id)
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+});
 
 // Register a new user
 usersRouter.post("/register", async (req, res, next) => {
@@ -52,7 +56,6 @@ usersRouter.post("/register", async (req, res, next) => {
 
 // Login to an existing user account
 usersRouter.post("/login", async (req, res, next) => {
-    console.log(req.body);
    try {
     const {username, password} = req.body;
     const user = await db.user.findUniqueOrThrow({
