@@ -29,14 +29,14 @@ postsRouter.get("/:id", async(req, res, next) => {
 });
 
 // Create a post
-postsRouter.post("/", requireToken, async (req, res, next) => {
+postsRouter.post("/", async (req, res, next) => {
     try {
         const {title, content} = req.body;
         const post = await db.post.create({
             data: {
                 title,
                 content,
-                // authorId: isValid(req.user.id) ? req.user.id : null
+                authorId: req.user.id
             }
         })
         res.status(201).send(post);
@@ -46,17 +46,16 @@ postsRouter.post("/", requireToken, async (req, res, next) => {
 });
 
 // Update a post
-postsRouter.put("/:id", async (req, res, next) => {
+postsRouter.patch("/:id", requireUser, async (req, res, next) => {
     try {
         const {title, content} = req.body;
         const post = await db.post.update({
+            where: {
+                id: Number(req.params.id)
+            },
             data: {
                 title,
-                content,
-                where: {
-                    id: Number(req.params.id)
-                    // ADD authorId
-                }
+                content
             }
         });
         res.status(201).send(post);

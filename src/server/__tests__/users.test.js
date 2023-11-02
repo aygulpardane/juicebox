@@ -11,7 +11,6 @@ describe('GET /users', () => {
         {id: 1234, username: 'fakeUsername2', password: 'fakePassword2', name: 'fakeName2', location: 'fakeLocation2'}
     ];
 
-    // mockResolvedValue (asynchronous so we wait for promise to resolve) vs mockReturnedValue (synchronous)
     prismaMock.user.findMany.mockResolvedValue(users);
 
     const response = await request(app).get('/users');
@@ -21,6 +20,12 @@ describe('GET /users', () => {
     expect(response.body[0]).toEqual(users[0]);
 
    });
+});
+
+describe('Get /users/:id', () => {
+    it('returns the logged in user', async () => {
+
+    });
 });
 
 describe('Register /users/register', () => {
@@ -35,5 +40,12 @@ describe('Login /users/login', () => {
     });
 });
 
+describe('Delete /users/:id', () => {
+    it('deletes the logged in user', async () => {
+
+    });
+});
+
+// mockResolvedValue (asynchronous so we wait for promise to resolve) vs mockReturnedValue (synchronous)
 // we are mocking user, and post, so we're testing to see if the API is working, not if the databse is working
 // if you break your code, your test should fail. if it's passing, something in your test is wrong

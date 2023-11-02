@@ -15,7 +15,7 @@ usersRouter.get("/", async (req, res, next) => {
     }
 });
 
-// TODO: Get a single user
+// Get a single user
 usersRouter.get("/:id",  async (req, res, next) => { // FIX requireUser
     console.log(req.user);
     try {
@@ -44,7 +44,7 @@ usersRouter.post("/register", async (req, res, next) => {
         // create a token with user id
         // jwt.sign takes payload, secret, and options as arguments
         // payload is used to find our which user is the owner (has to be unique)
-        const token = jwt.sign({id: user.id}, JWT);
+        const token = jwt.sign({id: user.id}, process.env.JWT);
 
         // send token to client in the response body
         res.status(201).send({token});
@@ -69,7 +69,7 @@ usersRouter.post("/login", async (req, res, next) => {
         return res.status(401).send("Invalid login credentials.")
     };
 
-    const token = jwt.sign({id: user.id}, JWT);
+    const token = jwt.sign({id: user.id}, process.env.JWT);
 
     res.send({user, token});
    } catch (error) {

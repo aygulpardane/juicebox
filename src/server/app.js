@@ -1,7 +1,9 @@
+require('dotenv').config();
 const path = require("path");
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
+const jwt = require("jsonwebtoken");
 
 app.use(morgan("dev"));
 
@@ -21,11 +23,18 @@ app.get("/hello", (req, res) => {
 app.use((req, res, next) => {
   const auth = req.headers.authorization;
   const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
-
   try {
-    req.user = jwt.verify(token, process.env.JWT); // validate token with jwt.verify
-  } catch {
-    req.user = null; // otherwise is null
+    // validate token with jwt.verify
+    req.user = jwt.verify(token, process.env.JWT);
+
+    // below we are catching a jsonwebtoken error and then setting req.user to null because we don't want anyone to register or login without a jsonwebtoken
+  } catch (e) {
+    if (e.name === "JsonWebTokenError") {
+      req.user = null;
+      // if it's not null, then send the other specific error
+    } else {
+      next(e);
+    }
   }
 
   next();
