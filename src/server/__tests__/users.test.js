@@ -22,16 +22,28 @@ describe('GET /users', () => {
    });
 });
 
-// describe('Get /users/:id', () => {
-//     it('returns the logged in user', async () => {
-
-//     });
-// });
-
 describe('Authentication', () => {
     beforeEach(() => {
         jwt.sign.mockReset();
     });
+
+    // describe('Get /users/:id', () => {
+    //     const loggedInUser = {
+    //         id: 1234,
+    //         username: 'testusername',
+    //         password: 'testpassword',
+    //         name: 'testname',
+    //         location: 'testlocation'
+    //     };
+    //     beforeEach(async () => {
+    //                 await prismaMock.user.create.mockResolvedValue(loggedInUser)
+    //               });
+    //     it('returns the logged in user', async () => {
+    //         const response = await request(app).get('/users/1234');
+
+    //         expect(response.body[0]).toEqual(singleUser[0]);
+    //     });
+    // });
 
     describe('Register /users/register', () => {
         it('creates a new user and a token', async () => {
@@ -50,10 +62,7 @@ describe('Authentication', () => {
                 location: 'testLocation'
             };
 
-            const token = 'asdfg';
-
             prismaMock.user.create.mockResolvedValue(createdUser);
-            jwt.sign.mockReturnValue(token);
 
             const response = await request(app).post('/users/register').send(newUser);
 
@@ -63,8 +72,25 @@ describe('Authentication', () => {
     });
 
     // describe('Login /users/login', () => {
-    //     it('logs in a user with valid username and password', async () => {
+    //     beforeEach(async () => {
+    //         await prismaMock.user.create.mockResolvedValue({
+    //             id: 1234,
+    //             username: 'testusername',
+    //             password: 'testpassword',
+    //             name: 'testname',
+    //             location: 'testlocation'
+    //         })
+    //       });
 
+    //     it('logs in a user with valid username and password', async () => {
+    //         const response = await request(app).post('/users/login').send({
+    //             username: 'testusername',
+    //             password: 'testpassword'
+    //           })
+
+    //           console.log(response.body);
+
+    //         expect(response.body.username).toBe('testusername');
     //     });
     // });
 

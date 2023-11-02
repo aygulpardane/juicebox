@@ -14,8 +14,6 @@ describe('GET /posts', () => {
 
     const response = await request(app).get('/posts');
 
-    console.log(response.body);
-
     expect(response.body[0]).toEqual(posts[0]);
 
    });
@@ -30,8 +28,6 @@ describe('GET /posts/:id', () => {
         prismaMock.post.findUniqueOrThrow.mockResolvedValue(singlePost);
 
         const response = await request(app).get('/posts/123');
-
-        console.log(response.body);
 
         expect(response.body[0]).toEqual(singlePost[0]);
     });
