@@ -101,11 +101,30 @@ describe('Authentication', () => {
     //     });
     // });
 
-    // describe('Delete /users/:id', () => {
-    //     it('deletes the logged in user', async () => {
+    describe('Delete /users/:id', () => {
+        beforeEach(() => {
+            jest.resetAllMocks();
+        });
+        it('deletes the logged in user', async () => {
+            const user = {
+                id: 1234,
+                username: 'testusername',
+                password: 'testpassword',
+                name: 'testname',
+                location: 'testlocation'
+            };
 
-    //     });
-    // });
+            jwt.verify.mockReturnValue({id: user.id});
+            prismaMock.user.delete.mockResolvedValue(user);
+
+            const response = await request(app).delete('/users/1234').set('Authorization', 'Bearer faketesttoken');
+
+            expect(response.body.username).toEqual(user.username);
+            expect(response.body.password).toEqual(user.password);
+            expect(response.body.name).toEqual(user.name);
+            expect(response.body.location).toEqual(user.location);
+        });
+    });
 });
 
 // mockResolvedValue (asynchronous so we wait for promise to resolve) vs mockReturnedValue (synchronous)
