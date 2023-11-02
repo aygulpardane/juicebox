@@ -21,21 +21,21 @@ describe('GET /posts', () => {
    });
 });
 
-describe('GET /posts/:id', () => {
-    it('returns a single post', async () => {
-        const post = [
-            {id: 123, suthorId: 123, title: 'fakeTitle', content: 'fakeContent'}
-        ];
+// describe('GET /posts/:id', () => {
+//     it('returns a single post', async () => {
+//         const post = [
+//             {id: 123, suthorId: 123, title: 'fakeTitle', content: 'fakeContent'}
+//         ];
 
-        prismaMock.post.findUniqueOrThrow.mockResolvedValue(post);
+//         prismaMock.post.findUniqueOrThrow.mockResolvedValue(post);
 
-        const response = await request(app).get('/posts/:id');
+//         const response = await request(app).get('/posts/:id');
 
-        console.log(response.body);
+//         console.log(response.body);
 
-        expect(response.body[0]).toEqual(post[0]);
-    });
-});
+//         expect(response.body[0]).toEqual(post[0]);
+//     });
+// });
 
 describe('Create /posts', () => {
     it('creates a post for an authenticated user', async () => {

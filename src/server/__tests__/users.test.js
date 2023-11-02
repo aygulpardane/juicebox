@@ -1,8 +1,10 @@
-const {mockDeep} = require('jest-mock-extended');
+const {mockDeep, JestMockExtended} = require('jest-mock-extended');
 const app = require('../app');
 const request = require('supertest');
-
+const jwt = require('jsonwebtoken');
 const prismaMock = require('../mocks/prismaMock');
+
+jest.mock('jsonwebtoken');
 
 describe('GET /users', () => {
    it('returns a list of all users', async () => {
@@ -15,8 +17,6 @@ describe('GET /users', () => {
 
     const response = await request(app).get('/users');
 
-    console.log(response.body);
-
     expect(response.body[0]).toEqual(users[0]);
 
    });
@@ -28,21 +28,50 @@ describe('Get /users/:id', () => {
     });
 });
 
-describe('Register /users/register', () => {
-    it('creates a new user with a username and password', async () => {
-
+describe('Authentication', () => {
+    beforeEach(() => {
+        jwt.sign.mockReset();
     });
-});
 
-describe('Login /users/login', () => {
-    it('logs in a user with valid username and password', async () => {
+    describe('Register /users/register', () => {
+        it('creates a new user and a token', async () => {
+            const newUser = {
+                username: 'testUserName',
+                password: 'testPassword',
+                name: 'testName',
+                location: 'testLocation'
+            };
 
+            const createdUser = {
+                id: 1,
+                username: 'testUserName',
+                password: 'testPassword',
+                name: 'testName',
+                location: 'testLocation'
+            };
+
+            const token = 'asdfg';
+
+            prismaMock.user.create.mockResolvedValue(createdUser);
+            jwt.sign.mockReturnValue(token);
+
+            const response = await request(app).post('/users/register').send(newUser);
+
+            expect(response.body.user.username).toEqual(createdUser.username);
+
+        });
     });
-});
 
-describe('Delete /users/:id', () => {
-    it('deletes the logged in user', async () => {
+    describe('Login /users/login', () => {
+        it('logs in a user with valid username and password', async () => {
 
+        });
+    });
+
+    describe('Delete /users/:id', () => {
+        it('deletes the logged in user', async () => {
+
+        });
     });
 });
 

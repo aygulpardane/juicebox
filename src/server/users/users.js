@@ -51,7 +51,7 @@ usersRouter.post("/register", async (req, res, next) => {
         const token = jwt.sign({id: user.id}, process.env.JWT);
 
         // send token to client in the response body
-        res.status(201).send({token});
+        res.status(201).send({user, token});
     } catch (error) {
         next(error);
     }
