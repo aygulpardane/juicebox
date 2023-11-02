@@ -27,23 +27,30 @@ describe('Authentication', () => {
         jwt.sign.mockReset();
     });
 
-    // describe('Get /users/:id', () => {
-    //     const loggedInUser = {
-    //         id: 1234,
-    //         username: 'testusername',
-    //         password: 'testpassword',
-    //         name: 'testname',
-    //         location: 'testlocation'
-    //     };
-    //     beforeEach(async () => {
-    //                 await prismaMock.user.create.mockResolvedValue(loggedInUser)
-    //               });
-    //     it('returns the logged in user', async () => {
-    //         const response = await request(app).get('/users/1234');
+    describe('Get /users/:id', () => {
+        beforeEach(() => {
+            jest.resetAllMocks();
+        });
+        it('returns the logged in user', async () => {
+            const user = {
+                id: 1234,
+                username: 'testusername',
+                password: 'testpassword',
+                name: 'testname',
+                location: 'testlocation'
+            };
 
-    //         expect(response.body[0]).toEqual(singleUser[0]);
-    //     });
-    // });
+            jwt.verify.mockReturnValue({id: user.id});
+            prismaMock.user.findUniqueOrThrow.mockResolvedValue(user);
+
+            const response = await request(app).get('/users/1234').set('Authorization', 'Bearer faketesttoken');
+
+            expect(response.body.username).toEqual(user.username);
+            expect(response.body.password).toEqual(user.password);
+            expect(response.body.name).toEqual(user.name);
+            expect(response.body.location).toEqual(user.location);
+        });
+    });
 
     describe('Register /users/register', () => {
         it('creates a new user and a token', async () => {
